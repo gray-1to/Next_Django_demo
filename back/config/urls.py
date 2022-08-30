@@ -20,4 +20,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('',include('next_django_app.urls')),
     path('', include("django_nextjs.urls")),
+    path('api/test_code',include('next_django_app.urls')),
+    path('api/operate',include('next_django_app.urls'))
 ]

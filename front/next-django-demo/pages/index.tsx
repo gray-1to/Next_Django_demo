@@ -2,8 +2,52 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { useEffect, useState } from "react";
+
 
 const Home: NextPage = () => {
+  const [data, setData] = useState("first");
+  var title_state = false;
+
+  async function useOperate(){
+    title_state = !title_state;
+    if(title_state){
+      document.title =`title state true`
+    }else{
+      document.title =`title state false`
+    }
+    // useEffect(()=>{
+      // fetch('/api/test_code')
+      // .then((res) => res.json())
+      // .then((res) => {
+      //   setData(res.data);
+      //   if(title_state){
+      //     document.title =`title state true`
+      //   }else{
+      //     document.title =`title state false`
+      //   }
+      // })
+    // })
+    const res = await fetch('/api/test_code');
+    const res_headers = await res.headers;
+    const res_data = await res_headers.get('mydata');
+    if(res_data == null){
+      setData("");
+    }else{
+      setData(res_data);
+    }
+    const res_content_type = await res_headers.get('CONTENT_TYPE');
+    if(res_content_type !=null){
+      if(title_state){
+        document.title = res_content_type;
+      }else{
+        document.title = res_content_type + false;
+      }
+    }else{
+      document.title = "null!"
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,6 +57,11 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <h1>I'm here!!!!!!!!!</h1>
+        <h1>{ data }</h1>
+        <button onClick={useOperate}>data変更</button>
+        <h1>{ String(title_state) }</h1>
+        {/* <button onClick={Operate}>data変更</button> */}
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
@@ -68,5 +117,6 @@ const Home: NextPage = () => {
     </div>
   )
 }
+
 
 export default Home
