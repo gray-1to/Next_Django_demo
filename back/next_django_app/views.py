@@ -2,7 +2,7 @@ from urllib.request import HTTPRedirectHandler
 from django.shortcuts import render
 from urllib3 import HTTPResponse
 from django.http import HttpResponse  
-from extensions.operate import operate_file
+from next_django_app.functions.operate import operate_file
 
 # def hello(request):
 #     hw = 'Hello World!'

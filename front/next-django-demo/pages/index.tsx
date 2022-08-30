@@ -2,7 +2,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+import {saveAs}  from 'file-saver'
+import axios, { AxiosResponse } from 'axios'
 
 
 const Home: NextPage = () => {
@@ -16,18 +18,6 @@ const Home: NextPage = () => {
     }else{
       document.title =`title state false`
     }
-    // useEffect(()=>{
-      // fetch('/api/test_code')
-      // .then((res) => res.json())
-      // .then((res) => {
-      //   setData(res.data);
-      //   if(title_state){
-      //     document.title =`title state true`
-      //   }else{
-      //     document.title =`title state false`
-      //   }
-      // })
-    // })
     const res = await fetch('/api/test_code');
     const res_headers = await res.headers;
     const res_data = await res_headers.get('mydata');
@@ -44,9 +34,25 @@ const Home: NextPage = () => {
         document.title = res_content_type + false;
       }
     }else{
-      document.title = "null!"
+      document.title = "null!";
     }
   }
+
+  async function Operate(){
+    axios.get('/api/operate', {responseType: 'blob',})
+      .then((res: AxiosResponse) => {
+        const blob = new Blob([res.data], {type: res.data.type});
+        const fileName = getFileName(res.headers['content-disposition']);
+        saveAs(blob, fileName);
+      })
+  }
+
+  const getFileName = (contentDisposition: string) => {
+    return decodeURI(contentDisposition).substring(
+      contentDisposition.indexOf('filename=') + 10,//length of "filename=_"
+      contentDisposition.length - 1,
+    )
+  };
 
   return (
     <div className={styles.container}>
@@ -61,7 +67,7 @@ const Home: NextPage = () => {
         <h1>{ data }</h1>
         <button onClick={useOperate}>data変更</button>
         <h1>{ String(title_state) }</h1>
-        {/* <button onClick={Operate}>data変更</button> */}
+        <button onClick={Operate}>operate用テストボタン</button>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
