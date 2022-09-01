@@ -20,7 +20,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('',include('next_django_app.urls')),
     path('', include("django_nextjs.urls")),
+    path('test_top',include('next_django_app.urls')),
     path('api/test_code',include('next_django_app.urls')),
-    path('api/operate',include('next_django_app.urls')),
-    path('api/upload_operate',include('next_django_app.urls'))
+    path('api/download_test_csv',include('next_django_app.urls')),
+    path('api/upload_operate_test_csv',include('next_django_app.urls')),
+    path('api/operate',include('next_django_app.urls'))
 ]

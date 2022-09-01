@@ -1,0 +1,52 @@
+/* トップページ用オリジナルcss */
+.mytitle {
+  font-size: larger;
+  font-weight: bolder;
+  line-height: 2.5;
+  font-size: 2.5rem;
+}
+
+.mybutton {
+  background-color: orange;
+  color: white;
+  font-weight: bolder;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 15%;
+  line-height: 2;
+  font-size: 2rem;
+}
+
+.mydescription {
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+.myframebox {
+  border: 5px solid burlywood;
+  border-radius: 13%;
+  padding: 10px;
+  margin: 10px;
+}
+
+.myactivebutton {
+  background-color: rgb(255, 0, 140);
+  color: white;
+  font-weight: bolder;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 15%;
+  line-height: 2;
+  font-size: 2rem;
+}
+
+.mynegativebutton {
+  background-color: rgb(149, 149, 149);
+  color: black;
+  font-weight: bolder;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 15%;
+  line-height: 2;
+  font-size: 2rem;
+}

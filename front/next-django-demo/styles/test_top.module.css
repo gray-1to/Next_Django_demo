@@ -1,0 +1,6 @@
+/* トップページ用オリジナルcss */
+.mytitle {
+  font-size: larger;
+  font-weight: bolder;
+  color: red;
+}
