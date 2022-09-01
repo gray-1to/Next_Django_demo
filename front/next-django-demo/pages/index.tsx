@@ -17,6 +17,11 @@ const Home: NextPage = () => {
     setPlusOption(!plus_opt);
   };
 
+  const [index_opt, setIndexOption] = useState(false);
+  const changeIndexOpt = () => {
+    setIndexOption(!index_opt);
+  };
+
   // 編集処理
   const [file, setFile] = useState<File| null>(null);
   const handleFileImportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,10 +38,9 @@ const Home: NextPage = () => {
     if(file){
       formData.append('csv_file', file);
       formData.append('plus_opt', String(plus_opt)); 
+      formData.append('index_opt', String(index_opt));
       axios.defaults.xsrfCookieName = 'csrftoken';
       axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-      // const tmp = formData.get('plus_opt');
-      // setStatus("lkj" + String(tmp));
       axios.post('/api/operate', formData)
       .then((res: AxiosResponse) => {
         const blob = new Blob([res.data], {type: res.data.type});
@@ -57,13 +61,13 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         {/* {% csrf_token %} */}
         <div className={mystyles.myframebox}>
-          {/* {status} */}
           <h1 className={mystyles.mytitle}>編集ツール</h1>
           <div>
             <p className={mystyles.mydescription}>1.選択ボタンから編集したいボタンをクリック</p>
             <input className={mystyles.mybutton} type='file' onChange={handleFileImportChange} />
             <p className={mystyles.mydescription}>2.編集方法を選択</p>
             <button className={plus_opt ? mystyles.myactivebutton : mystyles.mynegativebutton} onClick={changePlusOpt}>追加する行を行を正の値にする</button>
+            <button className={index_opt ? mystyles.myactivebutton : mystyles.mynegativebutton} onClick={changeIndexOpt}>行番号を表示する</button>
             <p className={mystyles.mydescription}>3.編集開始ボタンをクリック</p>
             <button className={mystyles.mybutton} onClick={handleSubmit}>編集開始</button>
           </div>

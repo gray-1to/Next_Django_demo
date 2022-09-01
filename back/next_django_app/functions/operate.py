@@ -45,23 +45,29 @@ def operate_uploaded_csv_func(uploaded_file):
     return response
 
 # for demo
-def operate_func(uploaded_file, plus_opt):
+def operate_func(uploaded_file, plus_opt, index_opt):
     csv_data = []
+    index = 0
     for line in uploaded_file:
         try:
             line_list = str(line.decode()).split(",")
         except UnicodeDecodeError:
             line_list = str(line.decode('cp932')).split(",")
-        
+        if(index_opt):
+            line_list = [index] + line_list
         csv_data.append(line_list)
+        index += 1
 
     csv_data.append(["ここから先がDjangoで追加された行", "左の列*100"])
     for i in range(1,100,2):
         if(plus_opt):
-            row = [i, i*2]
+            row = [i*2]
         else:
-            row = [-i, -i*100]
+            row = [-i*100]
+        if(index_opt):
+            row = [index] + row
         csv_data.append(row)
+        index +=1
     
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="foo.csv"'

@@ -31,8 +31,7 @@ def upload_operate_test_csv(request):
 def operate(request):
     uploaded_file = request.FILES['csv_file']
     plus_opt = (request.POST['plus_opt'] == "true")
-    print(plus_opt)
-    # plus_opt = False
-    response = operate_func(uploaded_file, plus_opt)
+    index_opt = (request.POST['index_opt'] == "true")
+    response = operate_func(uploaded_file, plus_opt, index_opt)
     return response
 
