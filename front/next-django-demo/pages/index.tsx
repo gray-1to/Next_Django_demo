@@ -2,12 +2,13 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {saveAs}  from 'file-saver'
 import axios, { AxiosResponse } from 'axios'
 
 
 const Home: NextPage = () => {
+  //テスト１：Djangoから「1」というデータを取得するテスト用
   const [data, setData] = useState("first");
   var title_state = false;
 
@@ -37,14 +38,14 @@ const Home: NextPage = () => {
       document.title = "null!";
     }
   }
-
+  //テスト２：Djangoからcsvデータを取得するテスト用
   async function Operate(){
     axios.get('/api/operate', {responseType: 'blob',})
       .then((res: AxiosResponse) => {
         const blob = new Blob([res.data], {type: res.data.type});
         const fileName = getFileName(res.headers['content-disposition']);
         saveAs(blob, fileName);
-      })
+      });
   }
 
   const getFileName = (contentDisposition: string) => {
@@ -53,6 +54,25 @@ const Home: NextPage = () => {
       contentDisposition.length - 1,
     )
   };
+  //テスト３：Next.jsからcsvファイルを送信するテスト用
+  const [file, setFile] = useState<File| null>(null);
+  const handleFileImportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.files) setFile(e.target.files[0])
+  };
+  const handleSubmit = () => {
+    let formData = new FormData();
+    if(file){
+      formData.append('csv_file', file);
+      axios.defaults.xsrfCookieName = 'csrftoken';
+      axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+      axios.post('/api/upload_operate', formData)
+      .then((res: AxiosResponse) => {
+        const blob = new Blob([res.data], {type: res.data.type});
+        const fileName = getFileName(res.headers['content-disposition']);
+        saveAs(blob, fileName);
+      });
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -64,10 +84,20 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1>I'm here!!!!!!!!!</h1>
+
+        <h1>＜＜テスト１：Djangoから「1」というデータを取得するテスト用＞＞</h1>
         <h1>{ data }</h1>
         <button onClick={useOperate}>data変更</button>
         <h1>{ String(title_state) }</h1>
+
+        <h1>＜＜テスト２：Djangoからcsvデータを取得するテスト用＞＞</h1>
         <button onClick={Operate}>operate用テストボタン</button>
+
+        <h1>＜＜テスト３：Next.jsからcsvファイルを送信するテスト用＞＞</h1>
+        {/* {% csrf_token %} */}
+        <input type='file' onChange={handleFileImportChange} />
+        <button onClick={handleSubmit}>送信する</button>
+
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>

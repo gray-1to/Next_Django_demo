@@ -2,7 +2,7 @@ from urllib.request import HTTPRedirectHandler
 from django.shortcuts import render
 from urllib3 import HTTPResponse
 from django.http import HttpResponse  
-from next_django_app.functions.operate import operate_file
+from next_django_app.functions.operate import operate_file, operate_uploaded_file
 
 # def hello(request):
 #     hw = 'Hello World!'
@@ -20,3 +20,9 @@ def test_code(request):
 def operate(request):
     response = operate_file()
     return response
+
+def upload_operate(request):
+    uploaded_file = request.FILES['csv_file']
+    response = operate_uploaded_file(uploaded_file)
+    return response
+
